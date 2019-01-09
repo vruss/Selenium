@@ -4,44 +4,63 @@
 # https://medium.freecodecamp.org/better-web-scraping-in-python-with-selenium-beautiful-soup-and-pandas-d6390592e251
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.webdriver.support.ui import Select
 import time
 
-##selenium for chromium
-#options = webdriver.ChromeOptions()
-#options.add_argument("google-chrome --user-data-dir=~/.config/chromium")
-#browser = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver", chrome_options=options)
-## 
+### Create config.py AND add it to your .gitignore file before commiting
+### Make 2 rows:    username = "username"
+###                 password = "password"
+import config 
+
+## Selenium for chromium
+from selenium import webdriver
+browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
+url = "https://portal.miun.se/group/student/my-schedule?p_p_id=miunmyscheduleportlet_WAR_miunmyscheduleportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_miunmyscheduleportlet_WAR_miunmyscheduleportlet_tabs1=grouproom" 
+browser.get(url) # Try to navigate to schedule page
+
 ##selenium for firefox
-profile = FirefoxProfile("/home/simon/.mozilla/firefox/jjen2epc.selenium") ##select folder for firefox profile
-browser = webdriver.Firefox(firefox_profile=profile) #load the firefox driver with the profile
+# profile = FirefoxProfile("/home/simon/.mozilla/firefox/jjen2epc.selenium") ##select folder for firefox profile
+# browser = webdriver.Firefox(firefox_profile=profile) #load the firefox driver with the profile
 
-url = "https://portal.miun.se/group/student/my-schedule?p_p_id=miunmyscheduleportlet_WAR_miunmyscheduleportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_miunmyscheduleportlet_WAR_miunmyscheduleportlet_tabs1=grouproom" #url for webbpage
+### LOGIN
+usernameBox = browser.find_element_by_id("username") # Username form field
+passwordBox = browser.find_element_by_id("password") # Password form field
 
-browser.get(url) #navigate to page behind login not working since login fails
-time.sleep(600) #sleep so i can enter login information and navigate the page
+usernameBox.send_keys(config.username)
+passwordBox.send_keys(config.password)
+
+submitButton = browser.find_element_by_name("submit") 
+submitButton.click() 
+
+### SELECT CAMPUT
+select = Select(browser.find_element_by_id('_miunmyscheduleportlet_WAR_miunmyscheduleportlet_pCampus'))
+select.select_by_visible_text("Sundsvall")
+
+
+### TODO: COLLECT DATA (THIS DOESN'T WORK!)
 innerHTML = browser.execute_script("return document.body.innerHTML") #returns the inner HTML as a string
 
 searchString = "data-description"
 searchUntil = "aria-controls"
 findReserv = "reserved"
-amountOfBookings = innerHTML.count(findReserv) #find all occurences of "reserved"
+amountOfBookings = innerHTML.count(findReserv) # Find all occurences of "reserved"
+print(amountOfBookings) ## Returns 0, doesn't work
 begin = 0
 i = 0
 length = 15
 
-
 while(i < amountOfBookings):
-    begin = innerHTML.find(searchString,begin) #finds the start of booking data
-    length = innerHTML.find(searchUntil,begin) #finds the end of booking data
+    begin = innerHTML.find(searchString,begin) # Finds the start of booking data
+    length = innerHTML.find(searchUntil,begin) # Finds the end of booking data
     begin = begin + len(searchString) + 2
-    subS = innerHTML[begin:length] #substring containing booking data
+    subS = innerHTML[begin:length] # Substring containing booking data
     print(subS)
     i += 1
 
-browser.quit()
+# browser.quit()
 
-text_file = open("index.html", "w")
-text_file.write(innerHTML)
-text_file.close()
+# text_file = open("index.html", "w")
+# text_file.write(innerHTML)
+# text_file.close()
+
+
