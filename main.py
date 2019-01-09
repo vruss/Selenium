@@ -1,5 +1,7 @@
-#/home/simon/.mozilla/firefox/f64wwqg7.default/
-#https://cas2.miun.se/cas/login?service=https%3A%2F%2Fportal.miun.se%2Fc%2Fportal%2Flogin%3Fredirect%3D%252Fgroup%252Fstudent%26p_l_id%3D10634
+# /home/simon/.mozilla/firefox/f64wwqg7.default/
+# https://cas2.miun.se/cas/login?service=https%3A%2F%2Fportal.miun.se%2Fc%2Fportal%2Flogin%3Fredirect%3D%252Fgroup%252Fstudent%26p_l_id%3D10634
+# http://stanford.edu/~mgorkove/cgi-bin/rpython_tutorials/Scraping_a_Webpage_Rendered_by_Javascript_Using_Python.php 
+# https://medium.freecodecamp.org/better-web-scraping-in-python-with-selenium-beautiful-soup-and-pandas-d6390592e251
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
