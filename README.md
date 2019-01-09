@@ -13,3 +13,10 @@ Python script for scraping MIUN room schedules.
 username = "username"
 password = "password"
 ```
+
+### Sources
+[Stanford University - Login system Guide](http://stanford.edu/~mgorkove/cgi-bin/rpython_tutorials/Scraping_a_Webpage_Rendered_by_Javascript_Using_Python.php)
+
+[Freecodecamp - Guide to scraping with Beautiful Soup](https://medium.freecodecamp.org/better-web-scraping-in-python-with-selenium-beautiful-soup-and-pandas-d6390592e251)
+
+[Beautiful Soup - Data scraping made easy](https://www.crummy.com/software/BeautifulSoup/)
