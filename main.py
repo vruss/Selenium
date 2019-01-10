@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support.ui import Select
 import time
 
@@ -10,6 +13,7 @@ import config
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
 url = "https://portal.miun.se/group/student/my-schedule?p_p_id=miunmyscheduleportlet_WAR_miunmyscheduleportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_miunmyscheduleportlet_WAR_miunmyscheduleportlet_tabs1=grouproom" 
+browser.implicitly_wait(10) # seconds
 browser.get(url) # Try to navigate to schedule page
 
 
@@ -27,15 +31,14 @@ submitButton.click()
 select = Select(browser.find_element_by_id('_miunmyscheduleportlet_WAR_miunmyscheduleportlet_pCampus'))
 select.select_by_visible_text("Sundsvall")
 
-
-### TODO: COLLECT DATA (THIS DOESN'T WORK!)
-innerHTML = browser.execute_script("return document.body.innerHTML") #returns the inner HTML as a string
+### COLLECT DATA
+time.sleep(2) # Wait for rooms to load
+innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
 searchString = "data-description"
 searchUntil = "aria-controls"
 findReserv = "reserved"
 amountOfBookings = innerHTML.count(findReserv) # Find all occurences of "reserved"
-print(amountOfBookings) ## Returns 0, doesn't work
 begin = 0
 i = 0
 length = 15
