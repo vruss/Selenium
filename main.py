@@ -11,8 +11,8 @@ import time
 ###                 password = "password"
 import config 
 
-usrn = input("Enter username: ")
-pswd = getpass.getpass("Enter password: ")
+# usrn = input("Enter username: ")
+# pswd = getpass.getpass("Enter password: ")
 
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
@@ -25,8 +25,10 @@ browser.get(url) # Try to navigate to schedule page
 usernameBox = browser.find_element_by_id("username") # Username form field
 passwordBox = browser.find_element_by_id("password") # Password form field
 
-usernameBox.send_keys(usrn)
-passwordBox.send_keys(pswd)
+# usernameBox.send_keys(usrn)
+# passwordBox.send_keys(pswd)
+usernameBox.send_keys(config.username)
+passwordBox.send_keys(config.password)
 
 submitButton = browser.find_element_by_name("submit") 
 submitButton.click() 
@@ -37,6 +39,13 @@ select.select_by_visible_text("Sundsvall")
 
 ### COLLECT DATA
 time.sleep(2) # Wait for rooms to load
+
+calenderButton = browser.find_element_by_id("calInput")
+calenderButton.click()
+
+calender = browser.find_element_by_class_name("yui3-calendar-content")
+# TODO: click a number
+
 innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
 searchString = "data-description"
