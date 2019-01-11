@@ -3,6 +3,7 @@
 # http://stanford.edu/~mgorkove/cgi-bin/rpython_tutorials/Scraping_a_Webpage_Rendered_by_Javascript_Using_Python.php 
 # https://medium.freecodecamp.org/better-web-scraping-in-python-with-selenium-beautiful-soup-and-pandas-d6390592e251
 
+import getpass
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
@@ -14,6 +15,9 @@ import time
 ### Make 2 rows:    username = "username"
 ###                 password = "password"
 import config 
+
+usrn = input("Enter username: ")
+pswd = getpass.getpass("Enter password: ")
 
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
@@ -29,8 +33,8 @@ browser.get(url) # Try to navigate to schedule page
 usernameBox = browser.find_element_by_id("username") # Username form field
 passwordBox = browser.find_element_by_id("password") # Password form field
 
-usernameBox.send_keys(config.username)
-passwordBox.send_keys(config.password)
+usernameBox.send_keys(usrn)
+passwordBox.send_keys(pswd)
 
 submitButton = browser.find_element_by_name("submit") 
 submitButton.click() 
@@ -60,9 +64,3 @@ while(i < amountOfBookings):
     i += 1
 
 # browser.quit()
-
-# text_file = open("index.html", "w")
-# text_file.write(innerHTML)
-# text_file.close()
-
-
