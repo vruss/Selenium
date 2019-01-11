@@ -28,8 +28,9 @@ fileGroup.add_argument("-f", "--file", help="use json file with credentials",
      type=argparse.FileType('r'), default=sys.stdin)
 parser.add_argument("-q", "--quit", help="exit browser after it's done", 
     action="store_true")
-    
+
 args = parser.parse_args()
+# if statements make arguments optional 
 if args.file:
     useFile = True
 if args.quit:
