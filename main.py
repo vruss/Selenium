@@ -1,4 +1,6 @@
 import getpass
+import sys
+import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
@@ -10,24 +12,37 @@ import argparse
 useFile = False
 shouldQuit = False
 
-## ARGUMENT PARSING
+# Class used to store credentials
+class creds:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    username = ""
+    password = ""
+
+### ARGUMENT PARSING
 parser = argparse.ArgumentParser()
 fileGroup = parser.add_argument_group()
 fileGroup.add_argument("-f", "--file", help="use file with credentials", 
-    action="store_true")
-fileGroup.add_argument("name", help="name of the file")
+     type=argparse.FileType('r'), default=sys.stdin)
 parser.add_argument("-q", "--quit", help="quit browser after it's done", 
     action="store_true")
+    
 args = parser.parse_args()
-if args.file and args.name:
+if args.file:
     useFile = True
-    config = args.name
 if args.quit:
     shouldQuit = True
 
-
+## If using file
 if (useFile == True):
-    import config # cred file specified in the readme
+    # args.file is the input file
+    with args.file as json_file:
+        # Loads the json file
+        data = json.load(json_file) 
+        # Create config object with username and password
+        config = creds(data["username"], data["password"])
 else:
     usrn = raw_input("Enter username: ")
     pswd = getpass.getpass("Enter password: ")
