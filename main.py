@@ -24,9 +24,9 @@ class creds:
 ### ARGUMENT PARSING
 parser = argparse.ArgumentParser()
 fileGroup = parser.add_argument_group()
-fileGroup.add_argument("-f", "--file", help="use file with credentials", 
+fileGroup.add_argument("-f", "--file", help="use json file with credentials", 
      type=argparse.FileType('r'), default=sys.stdin)
-parser.add_argument("-q", "--quit", help="quit browser after it's done", 
+parser.add_argument("-q", "--quit", help="exit browser after it's done", 
     action="store_true")
     
 args = parser.parse_args()
