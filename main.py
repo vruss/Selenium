@@ -4,11 +4,15 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support.ui import Select
 import time
+import argparse
 
-### Create config.py AND add it to your .gitignore file before commiting
-### Make 2 rows:    username = "username"
-###                 password = "password"
-import config 
+
+## ARGUMENT PARSING
+parser = argparse.ArgumentParser()
+parser.parse_args()
+
+
+import config # cred file specified in the readme
 
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
