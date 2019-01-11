@@ -7,16 +7,31 @@ from selenium.webdriver.support.ui import Select
 import time
 import argparse
 
+useFile = False
+shouldQuit = False
 
 ## ARGUMENT PARSING
 parser = argparse.ArgumentParser()
-parser.parse_args()
+fileGroup = parser.add_argument_group()
+fileGroup.add_argument("-f", "--file", help="use file with credentials", 
+    action="store_true")
+fileGroup.add_argument("name", help="name of the file")
+parser.add_argument("-q", "--quit", help="quit browser after it's done", 
+    action="store_true")
+args = parser.parse_args()
+if args.file and args.name:
+    useFile = True
+    config = args.name
+if args.quit:
+    shouldQuit = True
 
 
-import config # cred file specified in the readme
+if (useFile == True):
+    import config # cred file specified in the readme
+else:
+    usrn = raw_input("Enter username: ")
+    pswd = getpass.getpass("Enter password: ")
 
-# usrn = input("Enter username: ")
-# pswd = getpass.getpass("Enter password: ")
 
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
@@ -29,10 +44,12 @@ browser.get(url) # Try to navigate to schedule page
 usernameBox = browser.find_element_by_id("username") # Username form field
 passwordBox = browser.find_element_by_id("password") # Password form field
 
-# usernameBox.send_keys(usrn)
-# passwordBox.send_keys(pswd)
-usernameBox.send_keys(config.username)
-passwordBox.send_keys(config.password)
+if (useFile == True):
+    usernameBox.send_keys(config.username)
+    passwordBox.send_keys(config.password)
+else:
+    usernameBox.send_keys(usrn)
+    passwordBox.send_keys(pswd)
 
 submitButton = browser.find_element_by_name("submit") 
 submitButton.click() 
@@ -68,4 +85,5 @@ while(i < amountOfBookings):
     print(subS)
     i += 1
 
-# browser.quit()
+if (shouldQuit == True):
+    browser.quit()
