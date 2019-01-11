@@ -12,8 +12,8 @@ When using the input file argument you need to do the following:
 3. The file should look like this    
 ```json
 {
-	"username": "username", 
-	"password": "password"
+	"username": "your_username", 
+	"password": "your_password"
 }
 ```
 
