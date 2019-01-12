@@ -35,12 +35,16 @@ parser = argparse.ArgumentParser()
 fileGroup = parser.add_mutually_exclusive_group() 
 parser.add_argument("-q", "--quit", help="exit browser after it's done", 
     action="store_true")
+parser.add_argument("-v", "--verbose", help="print a more verbose output", 
+    action="store_true")
 fileGroup.add_argument("-i", "--input", help="load json file with credentials")
 fileGroup.add_argument("-o", "--output", help="save credentials to a json file")
 
 # Parse the arguments, if statements make args optional
 args = parser.parse_args() 
 
+if (args.verbose):
+    pass # TODO: make verbose stuff
 
 ## Using input
 if args.input:
