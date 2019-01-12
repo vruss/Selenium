@@ -50,6 +50,7 @@ if args.input:
         # Create config object with username and password
         config = Creds(data[0], data[1])
 else:
+    print("Please enter your MIUN credentials\n")
     config = Creds(raw_input("Enter username: "), getpass.getpass("Enter password: "))
 
 # Using output
@@ -60,6 +61,7 @@ if (args.output):
     
 
 ## Selenium for chromium
+print("\nTrying to start Google Chrome")
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
 url = "https://portal.miun.se/group/student/my-schedule?p_p_id=miunmyscheduleportlet_WAR_miunmyscheduleportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_miunmyscheduleportlet_WAR_miunmyscheduleportlet_tabs1=grouproom" 
 browser.implicitly_wait(10) # seconds
