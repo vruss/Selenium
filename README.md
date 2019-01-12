@@ -11,10 +11,10 @@ When using the input file argument you need to do the following:
 2. Add the json tile to your .gitignore file before commiting anything
 3. The file should look like this    
 ```json
-{
-	"username": "your_username", 
-	"password": "your_password"
-}
+[
+    "your_username", 
+    "your_password"
+]
 ```
 
 ### Sources
