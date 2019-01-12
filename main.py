@@ -1,5 +1,6 @@
 import getpass
 import sys
+from json import JSONEncoder
 import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,11 +10,9 @@ from selenium.webdriver.support.ui import Select
 import time
 import argparse
 
-useFile = False
-shouldQuit = False
 
 # Class used to store credentials
-class creds:
+class Creds:
     def __init__(self, username, password):
         self.username = username
         self.password = password
@@ -21,33 +20,47 @@ class creds:
     username = ""
     password = ""
 
+# Custom JSON Encoder to serialize object for json
+class CredsEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Creds):
+            return (
+                obj.username,
+                obj.password
+            )
+        else:
+            return super(CredsEncoder, self).default(object)
+
+
 ### ARGUMENT PARSING
 parser = argparse.ArgumentParser()
-fileGroup = parser.add_argument_group()
-fileGroup.add_argument("-f", "--file", help="use json file with credentials", 
-     type=argparse.FileType('r'), default=sys.stdin)
+# Argument group
+fileGroup = parser.add_mutually_exclusive_group() 
 parser.add_argument("-q", "--quit", help="exit browser after it's done", 
     action="store_true")
+fileGroup.add_argument("-i", "--input", help="load json file with credentials")
+fileGroup.add_argument("-o", "--output", help="save credentials to a json file")
 
-args = parser.parse_args()
-# if statements make arguments optional 
-if args.file:
-    useFile = True
-if args.quit:
-    shouldQuit = True
+# Parse the arguments, if statements make args optional
+args = parser.parse_args() 
 
-## If using file
-if (useFile == True):
-    # args.file is the input file
-    with args.file as json_file:
-        # Loads the json file
-        data = json.load(json_file) 
+
+## Using input
+if args.input:
+    # Open input file args.file
+    with open(args.input, 'r') as json_file:
+        data = json.load(json_file)        
         # Create config object with username and password
-        config = creds(data["username"], data["password"])
+        config = Creds(data[0], data[1])
 else:
-    usrn = raw_input("Enter username: ")
-    pswd = getpass.getpass("Enter password: ")
+    config = Creds(raw_input("Enter username: "), getpass.getpass("Enter password: "))
 
+# Using output
+if (args.output):
+    # Open output file
+    with open(args.output, 'w') as output_file:
+        json.dump(config, output_file, indent=4, cls=CredsEncoder)
+    
 
 ## Selenium for chromium
 browser = webdriver.Chrome("./chromedriver") # Replace with .Firefox()
@@ -60,12 +73,8 @@ browser.get(url) # Try to navigate to schedule page
 usernameBox = browser.find_element_by_id("username") # Username form field
 passwordBox = browser.find_element_by_id("password") # Password form field
 
-if (useFile == True):
-    usernameBox.send_keys(config.username)
-    passwordBox.send_keys(config.password)
-else:
-    usernameBox.send_keys(usrn)
-    passwordBox.send_keys(pswd)
+usernameBox.send_keys(config.username)
+passwordBox.send_keys(config.password)
 
 submitButton = browser.find_element_by_name("submit") 
 submitButton.click() 
@@ -101,5 +110,5 @@ while(i < amountOfBookings):
     print(subS)
     i += 1
 
-if (shouldQuit == True):
+if args.quit:
     browser.quit()
