@@ -28,6 +28,11 @@ class CredsEncoder(JSONEncoder):
         else:
             return super(CredsEncoder, self).default(object)
 
+# Bind raw_input to input in Python 2:
+try:
+    input = raw_input
+except NameError:
+    pass
 
 ### ARGUMENT PARSING
 parser = argparse.ArgumentParser()
@@ -55,7 +60,7 @@ if args.input:
         config = Creds(data[0], data[1])
 else:
     print("Please enter your MIUN credentials\n")
-    config = Creds(raw_input("Enter username: "), getpass.getpass("Enter password: "))
+    config = Creds(input("Enter username: "), getpass.getpass("Enter password: "))
 
 # Using output
 if (args.output):
