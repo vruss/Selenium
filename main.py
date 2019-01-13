@@ -48,8 +48,7 @@ fileGroup.add_argument("-o", "--output", help="save credentials to a json file")
 # Parse the arguments, if statements make args optional
 args = parser.parse_args() 
 
-if (args.verbose):
-    pass # TODO: make verbose stuff
+
 
 ## Using input
 if args.input:
@@ -94,33 +93,49 @@ select.select_by_visible_text("Sundsvall")
 ### COLLECT DATA
 time.sleep(2) # Wait for rooms to load
  
-# Open calender for chaning date 
+# Open calender for chaning date  
 calenderButton = browser.find_element_by_id("calInput")
 calenderButton.click()
 
 calender = browser.find_element_by_class_name("yui3-calendar-grid")
-# Find the day
+# Find the day TODO: FIX HARDCODED DATE, SUPPORT FOR NEXT MONTH, ETC... 
 calender = calender.find_element_by_xpath("//table/tbody/tr/td[contains(text(), '15')]");
 calender.click()
+time.sleep(2)
 
+# Change room
+room = browser.find_element_by_id("resRoom")
+room.click()
+select = Select(browser.find_element_by_id('shitass'))
+select.select_by_visible_text("M205")
+
+# Change time
+room = browser.find_element_by_id("resTimeSpan")
+room.click()
+room = browser.find_element_by_id("resStartTime")
+room.click()
+select = Select(browser.find_element_by_id('shitass'))
+select.select_by_visible_text("M205")
 
 innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
-searchString = "data-description"
-searchUntil = "aria-controls"
-findReserv = "reserved"
-amountOfBookings = innerHTML.count(findReserv) # Find all occurences of "reserved"
-begin = 0
-i = 0
-length = 15
+## Using verbose, print data scrape
+if (args.verbose):
+    searchString = "data-description"
+    searchUntil = "aria-controls"
+    findReserv = "reserved"
+    amountOfBookings = innerHTML.count(findReserv) # Find all occurences of "reserved"
+    begin = 0
+    i = 0
+    length = 15
 
-while(i < amountOfBookings):
-    begin = innerHTML.find(searchString,begin) # Finds the start of booking data
-    length = innerHTML.find(searchUntil,begin) # Finds the end of booking data
-    begin = begin + len(searchString) + 2
-    subS = innerHTML[begin:length] # Substring containing booking data
-    print(subS)
-    i += 1
+    while(i < amountOfBookings):
+        begin = innerHTML.find(searchString,begin) # Finds the start of booking data
+        length = innerHTML.find(searchUntil,begin) # Finds the end of booking data
+        begin = begin + len(searchString) + 2
+        subS = innerHTML[begin:length] # Substring containing booking data
+        print(subS)
+        i += 1
 
 if args.quit:
     browser.quit()
