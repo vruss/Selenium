@@ -114,8 +114,10 @@ room = browser.find_element_by_id("resTimeSpan")
 room.click()
 room = browser.find_element_by_id("resStartTime")
 room.click()
-select = Select(browser.find_element_by_id('shitass'))
-select.select_by_visible_text("M205")
+time.sleep(1)
+start = browser.find_element_by_id("selectableStartTimes")
+select = Select(start.find_element_by_xpath("//div/select")) # TODO: not working
+select.select_by_visible_text("08:00")
 
 innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
