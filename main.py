@@ -93,12 +93,16 @@ select.select_by_visible_text("Sundsvall")
 
 ### COLLECT DATA
 time.sleep(2) # Wait for rooms to load
-
+ 
+# Open calender for chaning date 
 calenderButton = browser.find_element_by_id("calInput")
 calenderButton.click()
 
-calender = browser.find_element_by_class_name("yui3-calendar-content")
-# TODO: click a number
+calender = browser.find_element_by_class_name("yui3-calendar-grid")
+# Find the day
+calender = calender.find_element_by_xpath("//table/tbody/tr/td[contains(text(), '15')]");
+calender.click()
+
 
 innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
