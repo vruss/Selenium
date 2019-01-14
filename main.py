@@ -99,25 +99,29 @@ calenderButton.click()
 
 calender = browser.find_element_by_class_name("yui3-calendar-grid")
 # Find the day TODO: FIX HARDCODED DATE, SUPPORT FOR NEXT MONTH, ETC... 
-calender = calender.find_element_by_xpath("//table/tbody/tr/td[contains(text(), '15')]");
+calender = calender.find_element_by_xpath("//table/tbody/tr/td[contains(text(), '15')]")
 calender.click()
 time.sleep(2)
 
 # Change room
-room = browser.find_element_by_id("resRoom")
+room = browser.find_element_by_xpath("//*[@id='resRoom']")
 room.click()
 select = Select(browser.find_element_by_id('shitass'))
 select.select_by_visible_text("M205")
 
 # Change time
-room = browser.find_element_by_id("resTimeSpan")
+room = browser.find_element_by_xpath("//*[@id='resStartTime']")
 room.click()
-room = browser.find_element_by_id("resStartTime")
-room.click()
-time.sleep(1)
-start = browser.find_element_by_id("selectableStartTimes")
-select = Select(start.find_element_by_xpath("//div/select")) # TODO: not working
+select = Select(browser.find_element_by_xpath("//*[@id='selectableStartTimes']/select"))
 select.select_by_visible_text("08:00")
+room = browser.find_element_by_xpath("//*[@id='resEndTime']")
+room.click()
+select = Select(browser.find_element_by_xpath("//*[@id='selectableEndTimes']/select"))
+select.select_by_visible_text("17:00")
+
+# Book
+book = browser.find_element_by_xpath("//*[@class='toolbar-content']/button[contains(text(), 'Do booking')]")
+book.click()
 
 innerHTML = browser.execute_script("return document.body.innerHTML") # Returns the inner HTML as a string
 
